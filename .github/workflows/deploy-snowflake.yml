@@ -25,6 +25,20 @@ jobs:
           use-oidc: true
           cli-version: "3.16"
 
+      - name: Check Snowflake environment
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        run: |
+          if [ -z "$SNOWFLAKE_ACCOUNT" ]; then
+            echo "SNOWFLAKE_ACCOUNT is EMPTY"
+            exit 1
+          fi
+
+          echo "SNOWFLAKE_ACCOUNT is populated"
+          echo "Account identifier length: ${#SNOWFLAKE_ACCOUNT}"
+          echo "Authenticator: ${SNOWFLAKE_AUTHENTICATOR}"
+          echo "Workload identity provider: ${SNOWFLAKE_WORKLOAD_IDENTITY_PROVIDER}"
+
       - name: Test Snowflake connection
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
